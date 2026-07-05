@@ -5,7 +5,7 @@
 **Contribution Number:** 1  
 **Student:** Philip Park  
 **Issue:** [Qiskit/qiskit#14115](https://github.com/Qiskit/qiskit/issues/14115)  
-**Status:** Phase IV in progress (pre-submission)
+**Status:** Phase IV in progress (branch is near review-ready as of 7/5/26; fine-tuning and auditing the changes before review)
 
 ---
 
@@ -209,9 +209,9 @@ Phase III — branch: https://github.com/philipjpark/qiskit/tree/fix-issue-14115
 
 - [x] Update docstring for `CommutativeCancellation.__init__` with `approximation_degree` docs
 - [x] Add release note tagged for changelog
-- [ ] Run `tox` locally before PR (blocked on editable install)
-- [ ] PR description includes `Fixes #14115` (Phase IV)
-- [ ] Disclose AI tool usage per Qiskit CONTRIBUTING.md (Phase IV PR)
+- [ ] Run `tox` locally before PR (blocked on editable install; validated via PyPI wheel overlay on 7/5/26)
+- [x] PR description includes `Fixes #14115` (draft ready — 7/5/26)
+- [x] Disclose AI tool usage per Qiskit CONTRIBUTING.md (included in PR draft — 7/5/26)
 - [ ] Sign CLA at https://qisk.it/cla before PR merge (Phase IV)
 
 #### Evaluate
@@ -233,8 +233,9 @@ See Testing Strategy below.
 
 #### Manual Testing
 
-- [x] Repro script confirms `Has approximation_degree: True` after Commit 1 (requires editable install or local source on PYTHONPATH)
-- [ ] Run `python -m unittest test.python.transpiler.test_commutative_cancellation.TestCommutativeCancellation.test_approximation_degree -v` after editable install
+- [x] API inspection confirmed `approximation_degree` present in `CommutativeCancellation.__init__` after implementation (Phase III)
+- [x] **`test_approximation_degree` logic validated locally (7/5/26):** Ran equivalent checks via PyPI Qiskit 2.5.0 wheel with patched `commutative_cancellation.py` (workaround for broken editable install / Rust toolchain on Windows)
+- [ ] Run official `python -m unittest test.python.transpiler.test_commutative_cancellation.TestCommutativeCancellation.test_approximation_degree -v` after editable install
 
 ---
 
@@ -265,8 +266,9 @@ See Testing Strategy below.
 - Matched patterns from `RemoveIdentityEquivalent` and closed community PR #16002 for preset wiring
 
 **Commits:**
-- `5f95b56cd`: Add approximation_degree to CommutativeCancellation pass
-- `091b2dd9d`: Wire approximation_degree through preset pass managers, add test, and release note
+- `1d99ffa3b`: Add approximation_degree to CommutativeCancellation pass (rebased)
+- `ec02f5cc7`: Wire approximation_degree through preset pass managers, add test, and release note (rebased)
+- `69660824a`: Remove Phase II repro script from PR branch (7/5/26)
 
 ---
 
@@ -278,9 +280,9 @@ See Testing Strategy below.
 - Drafted PR description and documented submission checklist in this README
 
 **Still to do before Phase IV complete:**
-- Remove `scripts/repro_issue_14115.py` from the PR branch (Phase II repro tooling only)
-- Rebase `fix-issue-14115` on latest `upstream/main` and push to fork
-- Run `test_approximation_degree` locally (full suite blocked on editable install)
+- ~~Remove `scripts/repro_issue_14115.py` from the PR branch~~ ✓ done 7/5/26 (`69660824a`)
+- ~~Rebase `fix-issue-14115` on latest `upstream/main` and push to fork~~ ✓ done 7/5/26
+- ~~Run `test_approximation_degree` locally~~ ✓ validated 7/5/26 (PyPI wheel overlay workaround)
 - Open upstream PR: [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115)
 - Sign CLA at https://qisk.it/cla
 - Comment on [#14115](https://github.com/Qiskit/qiskit/issues/14115) to coordinate with open PRs [#15777](https://github.com/Qiskit/qiskit/pull/15777) and [#16002](https://github.com/Qiskit/qiskit/pull/16002)
@@ -289,6 +291,38 @@ See Testing Strategy below.
 - Update PR link and status below to **Awaiting review**
 - Respond to maintainer feedback within 24 hours when it arrives
 - Mark **Phase IV Complete** in CodePath submission
+
+---
+
+### Week 5 Progress (Phase IV) — 7/5/26
+
+**Focus this week:** Pre-submission polish on a challenging issue in a large hybrid Python/Rust codebase.
+
+The complexity of the Qiskit transpiler — preset pass managers, Python pass wrappers, and Rust bindings that must stay in sync — pushed me to be meticulous and detail-oriented. Rather than rushing to open the upstream PR, I completed branch hygiene and local validation first.
+
+**Completed (7/5/26):**
+- Reviewed `git diff upstream/main...HEAD` — only 4 intended files changed, no debug code or unrelated edits
+- Removed Phase II repro tooling (`scripts/repro_issue_14115.py`) in commit `69660824a`
+- Rebased `fix-issue-14115` on latest `upstream/main` (`655dfbbdf`) and force-pushed to fork
+- Validated `test_approximation_degree` behavior locally (API + CX-CX cancellation for `None`, `0.5`, `1.0`) using PyPI Qiskit 2.5.0 with patched pass module — all checks passed
+- Refined PR description draft and updated pre-submission checklist below
+
+**Local validation output (7/5/26):**
+```
+API check: approximation_degree present in __init__
+Cancellation OK for approximation_degree=None
+Cancellation OK for approximation_degree=0.5
+Cancellation OK for approximation_degree=1.0
+ALL TESTS PASSED
+```
+
+**Still blocked / remaining before Phase IV complete:**
+- Editable install (`pip install -e .`) still blocked by Rust/cargo toolchain conflict on Windows (attempted rustup repair 7/5/26; full `tox` suite pending)
+- Sign CLA at https://qisk.it/cla
+- Open upstream PR: [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115)
+- Comment on [#14115](https://github.com/Qiskit/qiskit/issues/14115) to coordinate with open PRs [#15777](https://github.com/Qiskit/qiskit/pull/15777) and [#16002](https://github.com/Qiskit/qiskit/pull/16002)
+
+**Reflection:** Working through Phase IV on this issue reinforced that real open source contribution often means careful plumbing work — tracing how a single parameter flows from `transpile()` through presets into Rust — rather than writing new logic from scratch. The codebase rewards patience and precision.
 
 ---
 
@@ -304,8 +338,9 @@ See Testing Strategy below.
 **Branch:** https://github.com/philipjpark/qiskit/tree/fix-issue-14115
 
 **Key commits:**
-- https://github.com/philipjpark/qiskit/commit/5f95b56cd — Add approximation_degree to CommutativeCancellation pass
-- https://github.com/philipjpark/qiskit/commit/091b2dd9d — Wire preset pass managers, add test and release note
+- https://github.com/philipjpark/qiskit/commit/1d99ffa3b — Add approximation_degree to CommutativeCancellation pass
+- https://github.com/philipjpark/qiskit/commit/ec02f5cc7 — Wire preset pass managers, add test and release note
+- https://github.com/philipjpark/qiskit/commit/69660824a — Remove Phase II repro script from PR branch (7/5/26)
 
 **Approach decisions:** Followed `RemoveIdentityEquivalent` / `CommutativeOptimization` patterns. Pass accepts `float | None`, converts `None` to `1.0` before Rust call. Presets pass `pass_manager_config.approximation_degree` directly, matching neighboring passes.
 
@@ -317,12 +352,12 @@ See Testing Strategy below.
 
 **Summary:** Adds `approximation_degree` to `CommutativeCancellation` and wires it through all three preset pass manager call sites so `transpile(..., approximation_degree=...)` reaches commutation analysis inside the cancellation pass.
 
-**Pre-submission checklist (2026-06-27):**
-- [x] Core pass change committed (`5f95b56cd`)
-- [x] Preset wiring, test, and release note committed (`091b2dd9d`)
-- [ ] Remove `scripts/repro_issue_14115.py` from branch before upstream PR (Phase II tooling only)
-- [ ] Rebase on `upstream/main` and push to fork
-- [ ] Run `test_approximation_degree` (or full commutative cancellation suite)
+**Pre-submission checklist (updated 7/5/26):**
+- [x] Core pass change committed (`1d99ffa3b`)
+- [x] Preset wiring, test, and release note committed (`ec02f5cc7`)
+- [x] Remove `scripts/repro_issue_14115.py` from branch before upstream PR (`69660824a`)
+- [x] Rebase on `upstream/main` and push to fork (7/5/26)
+- [x] Run `test_approximation_degree` logic locally — validated via PyPI wheel overlay (7/5/26)
 - [ ] Open PR to `Qiskit/qiskit` `main` with `Fixes #14115` and AI disclosure per template
 - [ ] Sign CLA at https://qisk.it/cla
 
@@ -342,7 +377,7 @@ See Testing Strategy below.
 
 ## Learnings & Reflections
 
-### Technical Skills Gained (Week 4)
+### Technical Skills Gained (Week 2)
 
 - Navigated a hybrid Python/Rust codebase (Qiskit transpiler passes)
 - Learned how `approximation_degree` flows from `transpile()` through preset pass managers
@@ -358,6 +393,18 @@ See Testing Strategy below.
 
 - Check for existing open PRs on the issue before investing in Phase I selection (though the issue remains open and unmerged)
 - Start editable install earlier in the week to allow more time for Windows Rust compile
+
+### Technical Skills Gained (Week 5)
+
+- Deepened understanding of pre-submission review in a large codebase: diff hygiene, commit message clarity, and matching existing pass patterns exactly
+- Learned to treat Phase IV as its own discipline — not just "submit the PR," but verify every integration point before maintainers see it
+- Built patience for hybrid Python/Rust debugging when local source builds are blocked on Windows
+
+### Challenges Overcome (Week 5) — 7/5/26
+
+- Navigating the gap between "implementation done" and "review-ready" when the codebase spans Python wrappers, preset wiring, and Rust internals
+- Staying detail-oriented under complexity rather than rushing to open the upstream PR before local validation is complete
+- Working around broken Rust/cargo toolchain on Windows by validating Python-layer changes against a PyPI wheel install while keeping source edits on the PR branch
 
 ### Resources Used
 
