@@ -5,7 +5,7 @@
 **Contribution Number:** 1  
 **Student:** Philip Park  
 **Issue:** [Qiskit/qiskit#14115](https://github.com/Qiskit/qiskit/issues/14115)  
-**Status:** Phase IV in progress (branch is near review-ready as of 7/5/26; fine-tuning and auditing the changes before review)
+**Status:** Phase IV in progress (pre-submission — PR draft ready as of 7/12/26)
 
 ---
 
@@ -210,8 +210,8 @@ Phase III — branch: https://github.com/philipjpark/qiskit/tree/fix-issue-14115
 - [x] Update docstring for `CommutativeCancellation.__init__` with `approximation_degree` docs
 - [x] Add release note tagged for changelog
 - [ ] Run `tox` locally before PR (blocked on editable install; validated via PyPI wheel overlay on 7/5/26)
-- [x] PR description includes `Fixes #14115` (draft ready — 7/5/26)
-- [x] Disclose AI tool usage per Qiskit CONTRIBUTING.md (included in PR draft — 7/5/26)
+- [x] PR description includes `Fix #14115` (draft ready — 7/12/26)
+- [x] Disclose AI tool usage per Qiskit CONTRIBUTING.md / PR template (draft ready — 7/12/26)
 - [ ] Sign CLA at https://qisk.it/cla before PR merge (Phase IV)
 
 #### Evaluate
@@ -254,7 +254,7 @@ See Testing Strategy below.
 **What I built:**
 - Added `approximation_degree` parameter to `CommutativeCancellation.__init__` and forwarded it to
   `cancel_commutations()` in `commutative_cancellation.py`
-- Wired `pass_manager_config.approximation_degree` at all 3 preset call sites in `builtin_plugins.py`
+- [x] Wire `pass_manager_config.approximation_degree` at all 3 preset call sites in `builtin_plugins.py`
   (init stage, optimization level 2, optimization level 3)
 - Added `test_approximation_degree` in `test_commutative_cancellation.py` using `subTest` for
   `None`, `0.5`, and `1.0` on a CX-CX cancellation circuit
@@ -269,6 +269,8 @@ See Testing Strategy below.
 - `1d99ffa3b`: Add approximation_degree to CommutativeCancellation pass (rebased)
 - `ec02f5cc7`: Wire approximation_degree through preset pass managers, add test, and release note (rebased)
 - `69660824a`: Remove Phase II repro script from PR branch (7/5/26)
+- `13c0c8017`: Cleaned up fix-issue-14115 for upstream PR submission
+- `b617d952e`: Remove accidental `.venv-test` from PR branch (7/12/26)
 
 ---
 
@@ -283,6 +285,8 @@ See Testing Strategy below.
 - ~~Remove `scripts/repro_issue_14115.py` from the PR branch~~ ✓ done 7/5/26 (`69660824a`)
 - ~~Rebase `fix-issue-14115` on latest `upstream/main` and push to fork~~ ✓ done 7/5/26
 - ~~Run `test_approximation_degree` locally~~ ✓ validated 7/5/26 (PyPI wheel overlay workaround)
+- ~~PR description draft (template / why→what / checklist / evidence)~~ ✓ done 7/12/26 (Week 6)
+- ~~Remove accidental `.venv-test` from branch~~ ✓ done 7/12/26 (`b617d952e`)
 - Open upstream PR: [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115)
 - Sign CLA at https://qisk.it/cla
 - Comment on [#14115](https://github.com/Qiskit/qiskit/issues/14115) to coordinate with open PRs [#15777](https://github.com/Qiskit/qiskit/pull/15777) and [#16002](https://github.com/Qiskit/qiskit/pull/16002)
@@ -326,6 +330,27 @@ ALL TESTS PASSED
 
 ---
 
+### Week 6 Progress (Phase IV) — 7/12/26
+
+**Focus this week:** Finish pre-submission documentation so the Contribution README and PR draft meet program Phase IV writing requirements — without opening the upstream PR yet.
+
+**Completed (7/12/26):**
+- Expanded the Pull Request section into a full paste-ready description: why before what, `Fix #14115`, acceptance criteria checklist, before/after console evidence, and Qiskit AI/LLM disclosure checkboxes
+- Added a Maintainer Feedback log table (ready for dated entries after review starts)
+- Set README status to **Draft ready / Awaiting submission**
+- Confirmed branch cleanup commit on fork: `13c0c8017` — *Cleaned up fix-issue-14115 for upstream PR submission* (documents intent that the branch should only carry #14115 fix files)
+- Removed accidental `.venv-test` tree that had been committed with the cleanup commit (`b617d952e`) and ignored `.venv-test/` so the PR diff stays limited to the real fix files + a small gitignore hygiene line
+
+**Still remaining before Phase IV complete:**
+- Sign CLA at https://qisk.it/cla
+- Open upstream PR against `Qiskit/qiskit` `main`: [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115)
+- Paste the draft description into the GitHub PR form and update **PR Link** + status to **Awaiting review**
+- Comment on [#14115](https://github.com/Qiskit/qiskit/issues/14115) to coordinate with open PRs [#15777](https://github.com/Qiskit/qiskit/pull/15777) and [#16002](https://github.com/Qiskit/qiskit/pull/16002)
+
+**Reflection:** Week 6 showed that “review-ready” is as much about how you explain the change as the code itself. Filling the template, acceptance checklist, and evidence in the README first made the eventual upstream submission a copy-paste step rather than a scramble.
+
+---
+
 ## Code Changes
 
 **Files modified:**
@@ -334,6 +359,7 @@ ALL TESTS PASSED
 - `qiskit/transpiler/preset_passmanagers/builtin_plugins.py`
 - `test/python/transpiler/test_commutative_cancellation.py`
 - `releasenotes/notes/add-approximation-degree-commutative-cancellation.yaml`
+- `.gitignore` (Week 6 hygiene: ignore `.venv-test/` so local validation envs are not committed)
 
 **Branch:** https://github.com/philipjpark/qiskit/tree/fix-issue-14115
 
@@ -341,6 +367,8 @@ ALL TESTS PASSED
 - https://github.com/philipjpark/qiskit/commit/1d99ffa3b — Add approximation_degree to CommutativeCancellation pass
 - https://github.com/philipjpark/qiskit/commit/ec02f5cc7 — Wire preset pass managers, add test and release note
 - https://github.com/philipjpark/qiskit/commit/69660824a — Remove Phase II repro script from PR branch (7/5/26)
+- https://github.com/philipjpark/qiskit/commit/13c0c8017 — Cleaned up fix-issue-14115 for upstream PR submission (7/5/26 message; Week 6 cleanup intent)
+- https://github.com/philipjpark/qiskit/commit/b617d952e — Remove accidental `.venv-test` from PR branch (7/12/26)
 
 **Approach decisions:** Followed `RemoveIdentityEquivalent` / `CommutativeOptimization` patterns. Pass accepts `float | None`, converts `None` to `1.0` before Rust call. Presets pass `pass_manager_config.approximation_degree` directly, matching neighboring passes.
 
@@ -348,30 +376,78 @@ ALL TESTS PASSED
 
 ## Pull Request
 
-**PR Link:** *(not yet submitted — open at [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115) after final push)*
+**PR Link:** *(not yet submitted — open at [Compare & pull request](https://github.com/Qiskit/qiskit/compare/main...philipjpark:qiskit:fix-issue-14115) when ready)*
 
 **Summary:** Adds `approximation_degree` to `CommutativeCancellation` and wires it through all three preset pass manager call sites so `transpile(..., approximation_degree=...)` reaches commutation analysis inside the cancellation pass.
 
-**Pre-submission checklist (updated 7/5/26):**
+**Status:** Draft ready / Awaiting submission (updated 7/12/26)
+
+**Pre-submission checklist (updated 7/12/26):**
 - [x] Core pass change committed (`1d99ffa3b`)
 - [x] Preset wiring, test, and release note committed (`ec02f5cc7`)
 - [x] Remove `scripts/repro_issue_14115.py` from branch before upstream PR (`69660824a`)
 - [x] Rebase on `upstream/main` and push to fork (7/5/26)
 - [x] Run `test_approximation_degree` logic locally — validated via PyPI wheel overlay (7/5/26)
-- [ ] Open PR to `Qiskit/qiskit` `main` with `Fixes #14115` and AI disclosure per template
+- [x] PR description draft complete (template structure, why→what, acceptance checklist, evidence) — 7/12/26
+- [x] Branch hygiene for upstream: cleanup commit + remove accidental `.venv-test` (`13c0c8017`, `b617d952e`) — 7/12/26
+- [ ] Open PR to `Qiskit/qiskit` `main` with `Fix #14115` and AI disclosure per template
 - [ ] Sign CLA at https://qisk.it/cla
 
-**PR Description draft:**
+### PR Description draft (ready to paste into GitHub — 7/12/26)
 
-> Fixes #14115
+> ### Why
 >
-> Adds `approximation_degree` parameter to `CommutativeCancellation` and wires it through preset pass managers so that the transpiler-level approximation setting reaches commutation analysis inside the cancellation pass.
+> When users call `transpile(..., approximation_degree=...)`, that setting is meant to trade precision for speed across the optimization pipeline. Neighboring passes such as `RemoveIdentityEquivalent` already receive `pass_manager_config.approximation_degree`, but `CommutativeCancellation` did not: its Python wrapper never accepted the argument, never forwarded it to the Rust `cancel_commutations` binding (which already supports it), and the three preset call sites in `builtin_plugins.py` constructed the pass without the degree. As a result, commutation/cancellation always ran at full precision (`1.0`) even when the user asked for approximation. This is an integration gap — the lower-level implementation already existed; the public API and presets were not connected.
 >
-> AI tool disclosure: Cursor (used for implementation assistance and PR preparation)
+> ### What
+>
+> - Add `approximation_degree: float | None = 1.0` to `CommutativeCancellation.__init__`, document it, store it, and pass it through to `cancel_commutations` in `run()` (treating `None` as `1.0`, matching `CommutativeOptimization`)
+> - Wire `pass_manager_config.approximation_degree` at all three `CommutativeCancellation(...)` call sites in `builtin_plugins.py` (init stage + optimization levels 2 and 3)
+> - Add `test_approximation_degree` covering `None`, `0.5`, and `1.0` on a CX–CX cancellation circuit
+> - Add a release note for the changelog
+>
+> Fix #14115
+>
+> ### Does this PR meet the acceptance criteria?
+>
+> - [x] Tests added for new/changed behavior (`test_approximation_degree`)
+> - [x] Relevant tests passing locally (validated 7/5/26; see before/after below)
+> - [x] Follows project style guide (mirrors `RemoveIdentityEquivalent` / `CommutativeOptimization`)
+> - [x] No breaking changes introduced (new optional kwarg with default `1.0` preserves prior behavior)
+> - [x] Documentation / release note updated (`releasenotes/notes/add-approximation-degree-commutative-cancellation.yaml`)
+>
+> ### Before / after evidence
+>
+> **Before (Phase II repro — API gap):**
+> ```
+> CommutativeCancellation.__init__ parameters: ['self', 'basis_gates', 'target']
+> Has approximation_degree: False
+> RemoveIdentityEquivalent has approximation_degree: True
+> cancel_commutations Rust binding has approximation_degree: True
+> ```
+>
+> **After (local validation 7/5/26 — patched pass on PyPI Qiskit 2.5.0):**
+> ```
+> API check: approximation_degree present in __init__
+> Cancellation OK for approximation_degree=None
+> Cancellation OK for approximation_degree=0.5
+> Cancellation OK for approximation_degree=1.0
+> ALL TESTS PASSED
+> ```
+>
+> ### AI/LLM disclosure
+>
+> - [ ] I didn't use LLM tooling, or only used it privately.
+> - [x] I used the following tool to help write this PR description: Cursor
+> - [x] I used the following tool to generate or modify code: Cursor (implementation assistance for pass wiring, tests, release note, and PR prep)
 
-**Maintainer Feedback:** *(none yet — PR not submitted)*
+### Maintainer Feedback
 
-**Status:** Awaiting submission
+*(No maintainer feedback yet — upstream PR not submitted. Log entries will use: Date | Feedback summary | Response | Commit ref)*
+
+| Date | Feedback | My response | Commit |
+|------|----------|-------------|--------|
+| — | *(pending after PR opens)* | — | — |
 
 ---
 
@@ -405,6 +481,17 @@ ALL TESTS PASSED
 - Navigating the gap between "implementation done" and "review-ready" when the codebase spans Python wrappers, preset wiring, and Rust internals
 - Staying detail-oriented under complexity rather than rushing to open the upstream PR before local validation is complete
 - Working around broken Rust/cargo toolchain on Windows by validating Python-layer changes against a PyPI wheel install while keeping source edits on the PR branch
+
+### Technical Skills Gained (Week 6) — 7/12/26
+
+- Learned how to write a maintainer-facing PR description (why before what, close keyword, acceptance checklist, evidence) that stands on its own without the diff
+- Practiced aligning the Contribution README Pull Request section with Qiskit’s PR template and the program’s Phase IV sub-deliverables
+- Reinforced git hygiene for upstream readiness: cleanup commits must not include local virtualenvs or unrelated tooling
+
+### Challenges Overcome (Week 6) — 7/12/26
+
+- Filling program requirements that look like “PR features” using the README draft first, before the upstream PR exists
+- Catching and removing an accidental `.venv-test` commit so the fork branch stays reviewable for `Qiskit/qiskit`
 
 ### Resources Used
 
